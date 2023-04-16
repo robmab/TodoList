@@ -1,12 +1,102 @@
+/* * {
+  border: 1px red solid;
+} */
 
-/* 
+body {
+  background: #f4f4f4;
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 
-    You can write your own styles here...
-    
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
+/* DESIGN */
+h1 {
+  color: #e4d4d5;
+  font-size: 110px;
+  font-weight: 100;
+  font-family: unset;
+}
 
-*/
+.todo-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: #f1f1f0;
+  width: 550px;
+  box-shadow: 0 40px 30px 0 rgba(51, 51, 51, 0.036);
+}
+
+.todo-list,
+.tda,
+.tdb {
+  background-color: white;
+  box-shadow: 0 -1px 2px 0 rgb(144, 143, 143) inset;
+  border-radius: 1px;
+}
+.todo-list {
+  width: 100%;
+}
+.tda {
+  width: 99%;
+  height: 5.5px;
+}
+.tdb {
+  width: 98%;
+  height: 5.5px;
+}
+
+/* INPUT / LI */
+.todo-list-col * {
+  color: #908f8f;
+}
+
+.todo-list-col {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  padding: 10px 65px;
+  border-bottom: #f2eeef 1px solid;
+}
+.todo-list input,
+.todo-list li {
+  width: 100%;
+  border: none;
+  font-size: 25px;
+  font-weight: 300;
+  padding: 0;
+  overflow: auto;
+}
+
+.todo-list li::-webkit-scrollbar {
+  /* quit scroll bar */
+  display: none;
+}
+
+.todo-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.todo-list input::placeholder {
+  color: #908f8fb9;
+}
+
+.todo-list input:focus {
+  outline-width: 0;
+}
+
+/* FOOTER */
+
+.todo-list-footer {
+  padding-left: 20px;
+}
+
+.todo-list-footer p {
+  color: #a4a4a4c4;
+  font-size: 14px;
+  font-family: revert;
+}
