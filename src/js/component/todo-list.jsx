@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 //create your first component
 
 export const TodoList = () => {
+  const [close, setClose] = useState(false);
+
   const [value, setValue] = useState("");
 
   const [lis, setLis] = useState([]);
 
   const handleKeyDown = (e) => {
-    let aux;
     if (e.key === "Enter") {
-      aux =
-        e.target.value.charAt(0).toUpperCase() + // Capitalice
-        e.target.value.slice(1).toLowerCase();
-      setLis([aux, ...lis]); //like push method
+      setLis([e.target.value, ...lis]); //like push method
       setValue("");
     }
   };
@@ -21,7 +21,7 @@ export const TodoList = () => {
   const handleChange = (e) => {
     setValue(
       e.target.value.charAt(0).toUpperCase() + // Capitalice
-        e.target.value.slice(1).toLowerCase()
+        e.target.value.slice(1)
     );
   };
 
@@ -47,8 +47,31 @@ export const TodoList = () => {
           </div>
           <ul>
             {lis.map((x, i) => (
-              <div id={i} className="todo-list-col">
+              <div
+                a-key={i}
+                key={i}
+                className="todo-list-col"
+                onMouseEnter={() => setClose(i)}
+                onMouseLeave={() => setClose(false)}
+              >
                 <li>{x}</li>
+                <a
+                  onClick={(e) => {
+                    setLis(
+                      lis.filter(
+                        (_, i) =>
+                          Number(e.target.parentNode.getAttribute("a-key")) !==
+                          i
+                      )
+                    );
+                  }}
+                >
+                  {close === i ? (
+                    <FontAwesomeIcon icon={faX}  />
+                  ) : (
+                    ""
+                  )}
+                </a>
               </div>
             ))}
           </ul>

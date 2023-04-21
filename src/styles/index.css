@@ -58,7 +58,7 @@ h1 {
   align-items: center;
 
   width: 100%;
-  padding: 10px 65px;
+  padding: 10px 28px 10px 65px;
   border-bottom: #f2eeef 1px solid;
 }
 .todo-list input,
@@ -89,6 +89,14 @@ h1 {
   outline-width: 0;
 }
 
+.todo-list-col > a {
+cursor: pointer;
+line-height: 0;
+}
+
+.todo-list-col  path {
+color: #7401019a ;
+}
 /* FOOTER */
 
 .todo-list-footer {
