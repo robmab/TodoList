@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
@@ -10,10 +10,48 @@ export const TodoList = () => {
   const [value, setValue] = useState("");
 
   const [lis, setLis] = useState([]);
+  const [update, setUpdate] = useState(false);
+
+  useEffect(() => {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab")
+      .then((r) => {
+        if (!r.ok) throw Error(r.statusText);
+        return r.json();
+      })
+      .then((data) => {
+        setLis(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  if (update === true) {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab", {
+      method: "PUT",
+      body: JSON.stringify(lis),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((r) => {
+        if (!r.ok) throw Error(r.statusText);
+        //debug
+        console.log(r.ok);
+        console.log(r.status);
+        console.log(r.text());
+        //debug
+        return r.json();
+      })
+      .then((data) => setLis(data))
+      .catch((error) => console.log(error));
+
+    setUpdate(false);
+  }
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      setLis([e.target.value, ...lis]); //like push method
+      if (e.target.value === "") return;
+      setLis([{ label: e.target.value, done: false }, ...lis]); //like push method
+      setUpdate(true);
       setValue("");
     }
   };
@@ -48,29 +86,25 @@ export const TodoList = () => {
           <ul>
             {lis.map((x, i) => (
               <div
-                a-key={i}
+                id={i}
                 key={i}
                 className="todo-list-col"
                 onMouseEnter={() => setClose(i)}
                 onMouseLeave={() => setClose(false)}
               >
-                <li>{x}</li>
+                <li>{x.label}</li>
                 <a
                   onClick={(e) => {
+                    console.log(e.target.parentNode.parentNode.id);
                     setLis(
                       lis.filter(
-                        (_, i) =>
-                          Number(e.target.parentNode.getAttribute("a-key")) !==
-                          i
+                        (_, i) => e.target.parentNode.parentNode.id != i
                       )
                     );
+                    setUpdate(true);
                   }}
                 >
-                  {close === i ? (
-                    <FontAwesomeIcon icon={faX}  />
-                  ) : (
-                    ""
-                  )}
+                  {close === i ? <FontAwesomeIcon icon={faX} /> : ""}
                 </a>
               </div>
             ))}

@@ -3,10 +3,10 @@ import React from "react";
 import { TodoList } from "./todo-list.jsx";
 
 //create your first component
-export const Home = () => {
+export default function Home() {
   return (
-    <div>
-      <TodoList/>
-    </div>
+    <>
+      <TodoList />
+    </>
   );
-};
+}
