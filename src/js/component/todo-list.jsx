@@ -116,7 +116,7 @@ export const TodoList = () => {
               onKeyDown={handleKeyDown}
               onChange={handleChange}
               placeholder={
-                charge === false   //Hide placeholder while charging data from API
+                !charge   //Hide placeholder while charging data from API
                   ? ""
                   : lis.length === 0
                   ? "No tasks, add a task"
