@@ -11,19 +11,59 @@ export const TodoList = () => {
 
   const [lis, setLis] = useState([]);
 
+  /* FETCH */
   useEffect(() => {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab")
       .then((r) => {
-        if (!r.ok) throw Error(r.statusText);
+        if (!r.ok) throw Error(r);
         return r.json();
       })
-      .then((data) => {
-        setLis(data);
-      })
+      .then((data) => setLis(data))
       .catch((error) => console.log(error));
   }, []);
+  console.log(lis);
 
-  const updateFetch = (arr) => {
+  const updateFetch = (arr, meth) => {
+    if (arr.length < 1 && meth === "delete") {
+      fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab", {
+        method: "DELETE",
+      })
+        .then((r) => {
+          if (!r.ok) throw Error(r);
+        })
+        .catch((error) => console.log(error));
+      return;
+    }
+
+    if (arr.length == 1 && meth === "add") {
+      fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab", {
+        method: "POST",
+        body: JSON.stringify(arr),
+        headers: {
+          "Content-Type": "application/json",
+        }
+          .then((r) => {
+            if (!r.ok) throw Error(r);
+          })
+          .catch((error) => console.log(error)),
+      });
+
+      fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab", {
+        method: "PUT",
+        body: JSON.stringify([
+          { a: "", b: "" },
+          { a: "", b: "" },
+        ]),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((r) => {
+          if (!r.ok) throw Error(r);
+        })
+        .catch((error) => console.log(error));
+    }
+
     fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab", {
       method: "PUT",
       body: JSON.stringify(arr),
@@ -32,17 +72,11 @@ export const TodoList = () => {
       },
     })
       .then((r) => {
-        if (!r.ok) throw Error(r.statusText);
-        //debug
-        console.log(r.ok);
-        console.log(r.status);
-        console.log(r.text());
-        //debug
-        return r.json();
+        if (!r.ok) throw Error(r);
       })
-      .then((data) => setLis(data))
       .catch((error) => console.log(error));
   };
+  /* FETCH END*/
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -50,7 +84,7 @@ export const TodoList = () => {
 
       let addTask = [{ label: e.target.value, done: false }, ...lis];
       setLis(addTask); //like push method
-      updateFetch(addTask);
+      updateFetch(addTask, "add");
 
       setValue("");
     }
@@ -98,7 +132,7 @@ export const TodoList = () => {
                     let deleteTask = lis.filter((_, y) => i != y);
 
                     setLis(deleteTask);
-                    updateFetch(deleteTask);
+                    updateFetch(deleteTask, "delete");
                   }}
                 >
                   {close === i ? <FontAwesomeIcon icon={faX} /> : ""}
