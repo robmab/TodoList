@@ -7,10 +7,12 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 export const TodoList = () => {
   const [lis, setLis] = useState([]);
   const url = "https://assets.breatheco.de/apis/fake/todos/user/robmab";
+  const [charge, setCharge] = useState(false);
 
   /* FETCH */
   useEffect(() => {
-    //First time Update
+    
+    //First time Update GET
     fetch(url)
       .then((r) => {
         if (!r.ok) throw Error(r);
@@ -18,6 +20,7 @@ export const TodoList = () => {
       })
       .then((data) => {
         console.log(data);
+        setCharge(true);
         setLis(data);
       })
       .catch((error) => console.log(error));
@@ -113,7 +116,9 @@ export const TodoList = () => {
               onKeyDown={handleKeyDown}
               onChange={handleChange}
               placeholder={
-                lis.length === 0
+                charge === false   //Hide placeholder while charging data from API
+                  ? ""
+                  : lis.length === 0
                   ? "No tasks, add a task"
                   : "What needs to be done?"
               }
