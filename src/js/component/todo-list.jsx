@@ -11,17 +11,18 @@ export const TodoList = () => {
 
   const [lis, setLis] = useState([]);
 
-  /* FETCH */
   useEffect(() => {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab")
       .then((r) => {
         if (!r.ok) throw Error(r);
         return r.json();
       })
-      .then((data) => setLis(data))
+      .then((data) => {
+        console.log(data);
+        setLis(data);
+      })
       .catch((error) => console.log(error));
   }, []);
-  console.log(lis);
 
   const updateFetch = (arr, meth) => {
     if (arr.length < 1 && meth === "delete") {
@@ -30,8 +31,13 @@ export const TodoList = () => {
       })
         .then((r) => {
           if (!r.ok) throw Error(r);
+          return r.json();
+        })
+        .then((data) => {
+          console.log(data);
         })
         .catch((error) => console.log(error));
+
       return;
     }
 
@@ -41,27 +47,8 @@ export const TodoList = () => {
         body: JSON.stringify(arr),
         headers: {
           "Content-Type": "application/json",
-        }
-          .then((r) => {
-            if (!r.ok) throw Error(r);
-          })
-          .catch((error) => console.log(error)),
-      });
-
-      fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab", {
-        method: "PUT",
-        body: JSON.stringify([
-          { a: "", b: "" },
-          { a: "", b: "" },
-        ]),
-        headers: {
-          "Content-Type": "application/json",
         },
-      })
-        .then((r) => {
-          if (!r.ok) throw Error(r);
-        })
-        .catch((error) => console.log(error));
+      });
     }
 
     fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab", {
@@ -73,10 +60,11 @@ export const TodoList = () => {
     })
       .then((r) => {
         if (!r.ok) throw Error(r);
+        return r.json();
       })
+      .then((data) => console.log(data))
       .catch((error) => console.log(error));
   };
-  /* FETCH END*/
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
