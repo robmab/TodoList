@@ -89,12 +89,12 @@ export const TodoList = () => {
                 id={i}
                 key={i}
                 className="todo-list-col"
-                onMouseEnter={() => setClose(i)}
+                onMouseEnter={() => setClose(i)} //like hover { display:none}
                 onMouseLeave={() => setClose(false)}
               >
                 <li>{x.label}</li>
                 <a
-                  onClick={(e) => {
+                  onClick={() => {
                     let deleteTask = lis.filter((_, y) => i != y);
 
                     setLis(deleteTask);
