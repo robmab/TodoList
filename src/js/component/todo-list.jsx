@@ -10,7 +10,6 @@ export const TodoList = () => {
   const [value, setValue] = useState("");
 
   const [lis, setLis] = useState([]);
-  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab")
@@ -24,10 +23,10 @@ export const TodoList = () => {
       .catch((error) => console.log(error));
   }, []);
 
-  if (update === true) {
+  const updateFetch = (arr) => {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab", {
       method: "PUT",
-      body: JSON.stringify(lis),
+      body: JSON.stringify(arr),
       headers: {
         "Content-Type": "application/json",
       },
@@ -43,15 +42,16 @@ export const TodoList = () => {
       })
       .then((data) => setLis(data))
       .catch((error) => console.log(error));
-
-    setUpdate(false);
-  }
+  };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       if (e.target.value === "") return;
-      setLis([{ label: e.target.value, done: false }, ...lis]); //like push method
-      setUpdate(true);
+
+      let addTask = [{ label: e.target.value, done: false }, ...lis];
+      setLis(addTask); //like push method
+      updateFetch(addTask);
+
       setValue("");
     }
   };
@@ -95,13 +95,10 @@ export const TodoList = () => {
                 <li>{x.label}</li>
                 <a
                   onClick={(e) => {
-                    console.log(e.target.parentNode.parentNode.id);
-                    setLis(
-                      lis.filter(
-                        (_, i) => e.target.parentNode.parentNode.id != i
-                      )
-                    );
-                    setUpdate(true);
+                    let deleteTask = lis.filter((_, y) => i != y);
+
+                    setLis(deleteTask);
+                    updateFetch(deleteTask);
                   }}
                 >
                   {close === i ? <FontAwesomeIcon icon={faX} /> : ""}
