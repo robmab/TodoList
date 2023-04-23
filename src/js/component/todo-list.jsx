@@ -5,14 +5,13 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 //create your first component
 
 export const TodoList = () => {
-  const [close, setClose] = useState(false);
-
-  const [value, setValue] = useState("");
-
   const [lis, setLis] = useState([]);
+  const url = "https://assets.breatheco.de/apis/fake/todos/user/robmab";
 
+  /* FETCH */
   useEffect(() => {
-    fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab")
+    //First time Update
+    fetch(url)
       .then((r) => {
         if (!r.ok) throw Error(r);
         return r.json();
@@ -26,7 +25,8 @@ export const TodoList = () => {
 
   const updateFetch = (arr, meth) => {
     if (arr.length < 1 && meth === "delete") {
-      fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab", {
+      //Delete API when lis < 0
+      fetch(url, {
         method: "DELETE",
       })
         .then((r) => {
@@ -41,17 +41,29 @@ export const TodoList = () => {
       return;
     }
 
-    if (arr.length == 1 && meth === "add") {
-      fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab", {
+    if (arr.length === 1 && meth === "add") {
+      // Create API when lis = 1
+      fetch(url, {
         method: "POST",
         body: JSON.stringify(arr),
         headers: {
           "Content-Type": "application/json",
         },
-      });
+      })
+        .then((r) => {
+          if (!r.ok) throw Error(r);
+          return r.json();
+        })
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => console.log(error));
+
+      return;
     }
 
-    fetch("https://assets.breatheco.de/apis/fake/todos/user/robmab", {
+    fetch(url, {
+      //normal LIS update
       method: "PUT",
       body: JSON.stringify(arr),
       headers: {
@@ -65,6 +77,11 @@ export const TodoList = () => {
       .then((data) => console.log(data))
       .catch((error) => console.log(error));
   };
+  /* FETCH END*/
+
+  const [close, setClose] = useState(false);
+
+  const [value, setValue] = useState("");
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
