@@ -11,7 +11,6 @@ export const TodoList = () => {
 
   /* FETCH */
   useEffect(() => {
-    
     //First time Update GET
     fetch(url)
       .then((r) => {
@@ -90,8 +89,8 @@ export const TodoList = () => {
     if (e.key === "Enter") {
       if (e.target.value === "") return;
 
-      let addTask = [{ label: e.target.value, done: false }, ...lis];
-      setLis(addTask); //like push method
+      let addTask = [{ label: e.target.value, done: false }, ...lis]; //like push method
+      setLis(addTask);
       updateFetch(addTask, "add");
 
       setValue("");
@@ -116,7 +115,7 @@ export const TodoList = () => {
               onKeyDown={handleKeyDown}
               onChange={handleChange}
               placeholder={
-                !charge   //Hide placeholder while charging data from API
+                !charge //Hide placeholder while charging data from API
                   ? ""
                   : lis.length === 0
                   ? "No tasks, add a task"
