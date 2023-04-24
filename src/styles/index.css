@@ -96,7 +96,11 @@ line-height: 0;
 }
 
 .todo-list-col  path {
-color: #7401019a ;
+color: #7401013c ;
+}
+
+.todo-list-col  path:hover {
+  color: #ac0303fd;
 }
 /* FOOTER */
 
