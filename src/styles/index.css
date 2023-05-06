@@ -91,21 +91,33 @@ h1 {
 }
 
 .todo-list-col > a {
-cursor: pointer;
-line-height: 0;
+  cursor: pointer;
+  line-height: 0;
 }
 
-.todo-list-col  path {
-color: #7401013c ;
+.todo-list-col path {
+  color: #7401013c;
 }
 
-.todo-list-col  path:hover {
+.todo-list-col path:hover {
   color: #ac0303fd;
 }
 /* FOOTER */
 
 .todo-list-footer {
-  padding-left: 20px;
+  display: flex;
+  padding: 0 20px;
+}
+
+.todo-list-footer button {
+  padding: 0 1em !important;
+  margin: 0 0 0 auto !important;
+  line-height: 0;
+
+  height: 20px;
+  color: #a4a4a4c4;
+  font-size: 14px;
+  font-family: revert;
 }
 
 .todo-list-footer p {
