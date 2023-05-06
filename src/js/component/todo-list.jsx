@@ -7,19 +7,19 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 export const TodoList = () => {
   const [lis, setLis] = useState([]);
   const url = "https://assets.breatheco.de/apis/fake/todos/user/robmab";
-  const [charge, setCharge] = useState(false);
+  const [charged, setCharged] = useState(false);
 
   /* FETCH */
   useEffect(() => {
     //First time Update GET
     fetch(url)
       .then((r) => {
+        setCharged(true);
         if (!r.ok) throw Error(r);
         return r.json();
       })
       .then((data) => {
         console.log(data);
-        setCharge(true);
         setLis(data);
       })
       .catch((error) => console.log(error));
@@ -42,9 +42,26 @@ export const TodoList = () => {
 
       return;
     }
+    console.log(meth);
+    if (meth === "deleteAll") {
+      console.log("aqui");
+      fetch(url, {
+        method: "DELETE",
+      })
+        .then((r) => {
+          if (!r.ok) throw Error(r);
+          return r.json();
+        })
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => console.log(error));
+      return;
+    }
 
     if (arr.length === 1 && meth === "add") {
       // Create API when lis = 1
+
       fetch(url, {
         method: "POST",
         body: JSON.stringify(arr),
@@ -60,6 +77,25 @@ export const TodoList = () => {
           console.log(data);
         })
         .catch((error) => console.log(error));
+
+      /*When post, API create a new default task,
+      so we need put after post for define our first task,
+      I will use delay for this job */
+      setTimeout(() => {
+        fetch(url, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(arr),
+        })
+          .then((res) => {
+            if (!res.ok) throw Error(res);
+            return res.json();
+          })
+          .then((data) => console.log(data))
+          .catch((error) => console.log(error));
+      }, 600);
 
       return;
     }
@@ -79,6 +115,7 @@ export const TodoList = () => {
       .then((data) => console.log(data))
       .catch((error) => console.log(error));
   };
+
   /* FETCH END*/
 
   const [close, setClose] = useState(false);
@@ -104,6 +141,12 @@ export const TodoList = () => {
     );
   };
 
+  const deleteTasks = () => {
+    console.log("hello");
+    setLis([]);
+    updateFetch([], "deleteAll");
+  };
+
   return (
     <div className="wrapper">
       <h1>todos</h1>
@@ -115,7 +158,7 @@ export const TodoList = () => {
               onKeyDown={handleKeyDown}
               onChange={handleChange}
               placeholder={
-                !charge //Hide placeholder while charging data from API
+                !charged //Hide placeholder while charging data from API
                   ? ""
                   : lis.length === 0
                   ? "No tasks, add a task"
@@ -139,7 +182,6 @@ export const TodoList = () => {
                 <a
                   onClick={() => {
                     let deleteTask = lis.filter((_, y) => i != y);
-
                     setLis(deleteTask);
                     updateFetch(deleteTask, "delete");
                   }}
@@ -151,6 +193,13 @@ export const TodoList = () => {
           </ul>
           <div className="todo-list-footer">
             <p>{lis.length} item left</p>
+            <button
+              onClick={deleteTasks}
+              type="button"
+              className="btn btn-light"
+            >
+              Delete All Tasks
+            </button>
           </div>
         </div>
         <div className="tda"></div>
