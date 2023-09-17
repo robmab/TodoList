@@ -5,4 +5,4 @@
 ### Features
 - You can add personal notes, which will be saved in the cloud.
 - Individual or mass deletion function.
-- Contador de tareas.
+- Task counter.
